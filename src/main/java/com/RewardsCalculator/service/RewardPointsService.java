@@ -18,7 +18,7 @@ public interface RewardPointsService {
                                                              LocalDate endDate);
     Reward getCustomerRewardsWithinDateRange(String customerId, Map<String, Long> rewardsMap);
 
-    Reward getRewardsForTransaction(String transactionId);
+    Reward getRewardsForTransactionId(String transactionId);
 
     List<Transactions> findAllTransactions();
 

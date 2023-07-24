@@ -110,7 +110,7 @@ public class RewardsController {
 
     @GetMapping("/transaction/{id}")
     public ResponseEntity<Reward> getRewardsForTransaction(@PathVariable(name = "id") String transactionId){
-        return new ResponseEntity<>(rewardService.getRewardsForTransaction(transactionId), HttpStatus.OK);
+        return new ResponseEntity<>(rewardService.getRewardsForTransactionId(transactionId), HttpStatus.OK);
     }
 
 }

@@ -95,7 +95,6 @@ public class RewardPointsServiceImpl implements RewardPointsService {
             // Fetch the customer first and last name details from the repository.
             Customer customer = customerRepository.findFirstNameAndLastNameByCustomerId(customerId);
             if(customer == null) {
-
                 log.info("Customer Not Found");
                 return new Reward();
             }
@@ -119,7 +118,7 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                                                                    LocalDate endDate) {
 
         if (endDate.isAfter(startDate)) {
-            String errorMsg = "Invalid date range provided in the request. Start date cannot be after end date.";
+            String errorMsg = "Invalid date range provided in the request. End date cannot be more than start date.";
             log.error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
@@ -153,14 +152,22 @@ public class RewardPointsServiceImpl implements RewardPointsService {
             long rewards = rewardCalculationStrategy.calculateRewards(amount);
 
             LocalDate transactionDate = LocalDate.from(transaction.getTransactionDate());
-            if (transactionDate.isAfter(threeMonthDateRange.get("firstMonthStartDate")) &&
-                    transactionDate.isBefore(threeMonthDateRange.get("firstMonthEndDate"))) {
+            if ((transactionDate.isAfter(threeMonthDateRange.get("firstMonthStartDate")) &&
+                    transactionDate.isBefore(threeMonthDateRange.get("firstMonthEndDate")))
+                    || transactionDate.isEqual(threeMonthDateRange.get("firstMonthStartDate"))
+                    || transactionDate.isEqual(threeMonthDateRange.get("firstMonthEndDate"))) {
                 firstMonthRewards += rewards;
-            } else if (transactionDate.isAfter(threeMonthDateRange.get("secondMonthStartDate")) &&
-                    transactionDate.isBefore(threeMonthDateRange.get("secondMonthEndDate"))) {
+            } else if ((transactionDate.isAfter(threeMonthDateRange.get("secondMonthStartDate")) &&
+                    transactionDate.isBefore(threeMonthDateRange.get("secondMonthEndDate")))
+                    || transactionDate.isEqual(threeMonthDateRange.get("secondMonthStartDate"))
+                    || transactionDate.isEqual(threeMonthDateRange.get("secondMonthEndDate"))
+            ) {
                 secondMonthRewards += rewards;
-            } else if (transactionDate.isAfter(threeMonthDateRange.get("thirdMonthStartDate")) &&
-                    transactionDate.isBefore(threeMonthDateRange.get("thirdMonthEndDate"))) {
+            } else if ((transactionDate.isAfter(threeMonthDateRange.get("thirdMonthStartDate")) &&
+                    transactionDate.isBefore(threeMonthDateRange.get("thirdMonthEndDate")))
+                    || transactionDate.isEqual(threeMonthDateRange.get("thirdMonthStartDate"))
+                    || transactionDate.isEqual(threeMonthDateRange.get("thirdMonthEndDate"))
+            ){
                 thirdMonthRewards += rewards;
             } else {
                 totalRewards += rewards;
@@ -195,12 +202,14 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                     .build();
 
         } catch (Exception e) {
-            log.error("Error occurred while creating the reward object for customer with ID " + customerId + ": " + e.getMessage());
-            throw new RuntimeException("Error occurred while creating the reward object for customer with ID " + customerId, e);
+            log.error("Error occurred while creating the reward object for customer with ID " + customerId + ": " +
+                    e.getMessage());
+            throw new RuntimeException("Error occurred while creating the reward object for customer with ID " +
+                    customerId, e);
         }
     }
 
-    public Reward getRewardsForTransaction(String transactionId){
+    public Reward getRewardsForTransactionId(String transactionId){
         try{
             Transactions transaction = transactionRepository.findByTransactionId(transactionId);
             long rewards = rewardCalculationStrategy.calculateRewards(transaction.getPurchaseAmount());
@@ -214,8 +223,10 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                     .totalRewards(rewards)
                     .build();
         }catch (Exception e){
-            log.error("Error occurred while creating the reward object for given transaction" + transactionId + ": " + e.getMessage());
-            throw new RuntimeException("Error occurred while creating the reward object for given transaction " + transactionId, e);
+            log.error("Error occurred while creating the reward object for given transaction" + transactionId + ": "
+                    + e.getMessage());
+            throw new RuntimeException("Error occurred while creating the reward object for given transaction "
+                    + transactionId, e);
         }
     }
 
