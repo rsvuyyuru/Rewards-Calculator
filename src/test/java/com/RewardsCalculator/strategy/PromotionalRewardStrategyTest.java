@@ -66,5 +66,4 @@ class PromotionalRewardStrategyTest {
         assertEquals(expectedRewards, actualRewards, "Incorrect rewards for purchase amount > 100");
     }
 
-
 }

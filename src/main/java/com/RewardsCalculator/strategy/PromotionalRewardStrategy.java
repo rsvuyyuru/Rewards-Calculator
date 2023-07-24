@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component ("promotionalReward")
-public class PromotionalRewardStrategy implements RewardCalculationStrategy{
+@Component("promotionalReward")
+public class PromotionalRewardStrategy implements RewardCalculationStrategy {
 
     //As the calculation in the question is not too clear. For between 50-100, based on th example
     //I have implemented as when amount is 50 my method returns 0, for 100 it returns 50.

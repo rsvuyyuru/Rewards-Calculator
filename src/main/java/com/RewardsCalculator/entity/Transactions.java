@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,17 +16,17 @@ import java.time.LocalDateTime;
 
 public class Transactions {
 
-        @Id
-        //@GeneratedValue( strategy = GenerationType.IDENTITY)
-        @Column(name = "TRANSACTION_ID")
-        private String transactionId;
+    @Id
+    //@GeneratedValue( strategy = GenerationType.IDENTITY)
+    @Column(name = "TRANSACTION_ID")
+    private String transactionId;
 
-        @Column(name="CUSTOMER_ID")
-        private String customerId;
+    @Column(name = "CUSTOMER_ID")
+    private String customerId;
 
-        @Column(name = "TRANSACTION_DATE")
-        private LocalDateTime transactionDate;
+    @Column(name = "TRANSACTION_DATE")
+    private LocalDateTime transactionDate;
 
-        @Column(name = "AMOUNT")
-        private long purchaseAmount;
+    @Column(name = "AMOUNT")
+    private long purchaseAmount;
 }

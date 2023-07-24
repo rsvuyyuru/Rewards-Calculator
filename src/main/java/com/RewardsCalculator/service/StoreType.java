@@ -34,6 +34,7 @@ public enum StoreType {
     }
 
     public String getRuleDescription() {
-        return storesMap.getOrDefault(this, "No description available for rule");
+        return storesMap.getOrDefault(this,
+                "No description available for rule");
     }
 }

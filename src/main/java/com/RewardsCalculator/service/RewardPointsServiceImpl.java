@@ -76,7 +76,7 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                         .totalRewards(rewardsMap.get("totalRewards"))
                         .build());
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error occurred while fetching rewards for all customers: " + e.getMessage());
         }
         return allCustomersRewards;
@@ -84,17 +84,17 @@ public class RewardPointsServiceImpl implements RewardPointsService {
 
     public Reward getRewardsById(String customerId) {
 
-        try{
+        try {
             // Get the start and end dates for the last three months billing cycle.
             Map<String, LocalDate> threeMonthDateRange = getLastThreeMonthsBillingCycle(LocalDate.now());
 
             // Get the rewards for the customer within the last three months date range.
-            Map<String, Long> rewardsMap =  getRewardMapForCustomerIdWithinDateRange(customerId,
-                    threeMonthDateRange.get("firstMonthEndDate"), threeMonthDateRange.get("thirdMonthStartDate") );
+            Map<String, Long> rewardsMap = getRewardMapForCustomerIdWithinDateRange(customerId,
+                    threeMonthDateRange.get("firstMonthEndDate"), threeMonthDateRange.get("thirdMonthStartDate"));
 
             // Fetch the customer first and last name details from the repository.
             Customer customer = customerRepository.findFirstNameAndLastNameByCustomerId(customerId);
-            if(customer == null) {
+            if (customer == null) {
                 log.info("Customer Not Found");
                 return new Reward();
             }
@@ -114,8 +114,8 @@ public class RewardPointsServiceImpl implements RewardPointsService {
     }
 
 
-    public Map<String,Long> getRewardMapForCustomerIdWithinDateRange(String customerId, LocalDate startDate,
-                                                                   LocalDate endDate) {
+    public Map<String, Long> getRewardMapForCustomerIdWithinDateRange(String customerId, LocalDate startDate,
+                                                                      LocalDate endDate) {
 
         if (endDate.isAfter(startDate)) {
             String errorMsg = "Invalid date range provided in the request. End date cannot be more than start date.";
@@ -167,7 +167,7 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                     transactionDate.isBefore(threeMonthDateRange.get("thirdMonthEndDate")))
                     || transactionDate.isEqual(threeMonthDateRange.get("thirdMonthStartDate"))
                     || transactionDate.isEqual(threeMonthDateRange.get("thirdMonthEndDate"))
-            ){
+            ) {
                 thirdMonthRewards += rewards;
             } else {
                 totalRewards += rewards;
@@ -209,8 +209,8 @@ public class RewardPointsServiceImpl implements RewardPointsService {
         }
     }
 
-    public Reward getRewardsForTransactionId(String transactionId){
-        try{
+    public Reward getRewardsForTransactionId(String transactionId) {
+        try {
             Transactions transaction = transactionRepository.findByTransactionId(transactionId);
             long rewards = rewardCalculationStrategy.calculateRewards(transaction.getPurchaseAmount());
 
@@ -222,7 +222,7 @@ public class RewardPointsServiceImpl implements RewardPointsService {
                     .lastName(customer.getLastName())
                     .totalRewards(rewards)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Error occurred while creating the reward object for given transaction" + transactionId + ": "
                     + e.getMessage());
             throw new RuntimeException("Error occurred while creating the reward object for given transaction "
@@ -259,8 +259,8 @@ public class RewardPointsServiceImpl implements RewardPointsService {
 
             return billingDatesMap;
         } catch (Exception e) {
-            log.error("Error occurred while retrieving the three month prior dates from given date"  + e.getMessage());
-            throw new RuntimeException(" Error occurred while retrieving the three month prior dates from given date ", e);
+            log.error("Error occurred while retrieving the three month prior dates from given date" + e.getMessage());
+            throw new RuntimeException("Error occurred while retrieving the three month prior dates from given date", e);
         }
     }
 

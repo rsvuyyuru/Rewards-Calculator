@@ -15,13 +15,13 @@ public class Customer {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="CUSTOMER_ID")
+    @Column(name = "CUSTOMER_ID")
     private String customerId;
 
-    @Column(name="FIRST_NAME")
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @Column(name="LAST_NAME")
+    @Column(name = "LAST_NAME")
     private String lastName;
 
 }

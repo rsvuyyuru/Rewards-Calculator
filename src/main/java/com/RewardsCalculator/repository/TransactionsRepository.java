@@ -18,6 +18,7 @@ public interface TransactionsRepository extends JpaRepository<Transactions, Long
     /**
      * Retrieve the transactions for a specific customer within a date range.
      */
-    List<Transactions> findByCustomerIdAndTransactionDateBetween(String customerId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Transactions> findByCustomerIdAndTransactionDateBetween(String customerId, LocalDateTime startDate,
+                                                                 LocalDateTime endDate);
 
 }

@@ -48,9 +48,11 @@ class RewardPointsServiceImplTest {
         customers.add(new Customer("2", "Jane", "Smith"));
 
         List<Transactions> transactionsList = new ArrayList<>();
-        transactionsList.add(new Transactions("101","1", LocalDate.now().minusDays(10).atStartOfDay(),
+        transactionsList.add(new Transactions("101", "1",
+                LocalDate.now().minusDays(10).atStartOfDay(),
                 100));
-        transactionsList.add(new Transactions("102","1",LocalDate.now().minusDays(32).atStartOfDay(),
+        transactionsList.add(new Transactions("102", "1",
+                LocalDate.now().minusDays(32).atStartOfDay(),
                 120));
 
         List<Transactions> transactionsList2 = List.of(
@@ -113,9 +115,9 @@ class RewardPointsServiceImplTest {
         Customer customer = new Customer(customerId, "John", "Doe");
 
         List<Transactions> transactionsList = new ArrayList<>();
-        transactionsList.add(new Transactions("101",customerId, LocalDate.now().minusDays(10).atStartOfDay(),
+        transactionsList.add(new Transactions("101", customerId,LocalDate.now().minusDays(10).atStartOfDay(),
                 160));
-        transactionsList.add(new Transactions("102",customerId,LocalDate.now().minusDays(62).atStartOfDay(),
+        transactionsList.add(new Transactions("102", customerId,LocalDate.now().minusDays(62).atStartOfDay(),
                 120));
 
         // Mock the current date
@@ -140,14 +142,14 @@ class RewardPointsServiceImplTest {
         assertEquals(170L, customerRewards.getFirstMonthRewards());
         assertEquals(0L, customerRewards.getSecondMonthRewards());
         assertEquals(90L, customerRewards.getThirdMonthRewards());
-   }
+    }
 
     @Test
     public void testGetRewardsForNonExistingCustomer() {
         String customerId = "2";
 
         List<Transactions> transactionsList = new ArrayList<>();
-        transactionsList.add(new Transactions("101",customerId, LocalDate.now().minusDays(10).atStartOfDay(),
+        transactionsList.add(new Transactions("101", customerId, LocalDate.now().minusDays(10).atStartOfDay(),
                 100));
 
         // Mock the current date
@@ -167,8 +169,8 @@ class RewardPointsServiceImplTest {
 
         // Assert the result
         assertEquals(null, result.getCustomerId());
-        assertNull(null,result.getFirstName());
-        assertNull(null,result.getLastName());
+        assertNull(null, result.getFirstName());
+        assertNull(null, result.getLastName());
         assertEquals(0L, result.getFirstMonthRewards());
         assertEquals(0L, result.getSecondMonthRewards());
         assertEquals(0L, result.getThirdMonthRewards());
@@ -186,11 +188,14 @@ class RewardPointsServiceImplTest {
         LocalDateTime end = endDate.atTime(LocalTime.MAX);
 
         List<Transactions> transactionsList = List.of(
-                new Transactions("101", customerId, LocalDateTime.of(2023, 6, 15, 12, 0),
+                new Transactions("101", customerId,
+                        LocalDateTime.of(2023, 6, 15, 12, 0),
                         100),
-                new Transactions("102", customerId, LocalDateTime.of(2023, 5, 10, 8, 0),
+                new Transactions("102", customerId,
+                        LocalDateTime.of(2023, 5, 10, 8, 0),
                         120),
-                new Transactions("103", customerId, LocalDateTime.of(2023, 4, 10, 8, 0),
+                new Transactions("103", customerId,
+                        LocalDateTime.of(2023, 4, 10, 8, 0),
                         80)
         );
 
@@ -202,7 +207,8 @@ class RewardPointsServiceImplTest {
                 .thenReturn(transactionsList);
 
 //        // Call the method under test
-        Map<String, Long> rewardsMap = rewardPointsService.getRewardMapForCustomerIdWithinDateRange(customerId, startDate, endDate);
+        Map<String, Long> rewardsMap = rewardPointsService.getRewardMapForCustomerIdWithinDateRange(customerId,
+                startDate, endDate);
 
         // Assert the rewards map
         assertNotNull(rewardsMap);
@@ -232,14 +238,15 @@ class RewardPointsServiceImplTest {
         LocalDate endDate = LocalDate.of(2023, 9, 30);
 
         // Call the method under test and expect it to throw an IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> rewardPointsService.getRewardMapForCustomerIdWithinDateRange(customerId, startDate, endDate));
+        assertThrows(IllegalArgumentException.class, () ->
+                rewardPointsService.getRewardMapForCustomerIdWithinDateRange(customerId, startDate, endDate));
     }
 
 
     @Test
-    public void testGetRewardsForTransactionFound(){
+    public void testGetRewardsForTransactionFound() {
 
-        Transactions transaction = new Transactions("101","1", LocalDateTime.now(),
+        Transactions transaction = new Transactions("101", "1", LocalDateTime.now(),
                 100);
         when(transactionRepository.findByTransactionId(any())).thenReturn(transaction);
         when(rewardCalculationStrategy.calculateRewards(100L)).thenReturn(50L);
